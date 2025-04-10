@@ -28,25 +28,24 @@ if st.button("Convert to MP3"):
                         'quiet': True,
                         'noplaylist': True,
                         'http_headers': {
-                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
                         }
                     }
 
                     with YoutubeDL(ydl_opts) as ydl:
-                        info = ydl.extract_info(url, download=True)
-                        title = info.get('title', 'audio')
-                        filename = os.path.join(tmp_dir, f"{title}.mp3")
+                        info_dict = ydl.extract_info(url, download=True)
+                        filename = ydl.prepare_filename(info_dict).replace(info_dict['ext'], 'mp3')
 
                     if os.path.exists(filename):
                         with open(filename, "rb") as f:
-                            st.success(f"Download Ready: {title}.mp3")
+                            st.success(f"Download Ready: {info_dict['title']}.mp3")
                             st.download_button(
                                 label="🎧 Download MP3",
                                 data=f,
-                                file_name=f"{title}.mp3",
+                                file_name=f"{info_dict['title']}.mp3",
                                 mime="audio/mpeg"
                             )
                     else:
-                        st.error("Something went wrong. File not found.")
+                        st.error("Something went wrong. MP3 file not found.")
             except Exception as e:
                 st.error(f"Error: {e}")
