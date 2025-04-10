@@ -18,18 +18,18 @@ if st.button("Convert to MP3"):
                     ydl_opts = {
                         'format': 'bestaudio/best',
                         'outtmpl': os.path.join(tmp_dir, '%(title)s.%(ext)s'),
-                        'ffmpeg_location': '/usr/bin',  # directory containing ffmpeg and ffprobe
+                        'ffmpeg_location': '/usr/bin/ffmpeg',
                         'postprocessors': [{
                             'key': 'FFmpegExtractAudio',
                             'preferredcodec': 'mp3',
                             'preferredquality': '192',
                         }],
                         'prefer_ffmpeg': True,
-                        'postprocessor_args': [
-                            '-ffmpeg_location', '/usr/bin/ffmpeg',
-                            '-ffprobe_location', '/usr/bin/ffprobe'
-                        ],
                         'quiet': True,
+                        'noplaylist': True,
+                        'http_headers': {
+                            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36'
+                        }
                     }
 
                     with YoutubeDL(ydl_opts) as ydl:
@@ -47,6 +47,6 @@ if st.button("Convert to MP3"):
                                 mime="audio/mpeg"
                             )
                     else:
-                        st.error("Something went wrong.")
+                        st.error("Something went wrong. File not found.")
             except Exception as e:
                 st.error(f"Error: {e}")
