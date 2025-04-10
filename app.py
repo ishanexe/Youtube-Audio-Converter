@@ -18,15 +18,19 @@ if st.button("Convert to MP3"):
                     ydl_opts = {
                         'format': 'bestaudio/best',
                         'outtmpl': os.path.join(tmp_dir, '%(title)s.%(ext)s'),
-                        'ffmpeg_location': '/usr/bin/ffmpeg',  # precise binary path
+                        'ffmpeg_location': '/usr/bin',  # directory containing ffmpeg and ffprobe
                         'postprocessors': [{
                             'key': 'FFmpegExtractAudio',
                             'preferredcodec': 'mp3',
                             'preferredquality': '192',
                         }],
+                        'prefer_ffmpeg': True,
+                        'postprocessor_args': [
+                            '-ffmpeg_location', '/usr/bin/ffmpeg',
+                            '-ffprobe_location', '/usr/bin/ffprobe'
+                        ],
                         'quiet': True,
                     }
-
 
                     with YoutubeDL(ydl_opts) as ydl:
                         info = ydl.extract_info(url, download=True)
