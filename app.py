@@ -18,6 +18,7 @@ if st.button("Convert to MP3"):
                     ydl_opts = {
                         'format': 'bestaudio/best',
                         'outtmpl': os.path.join(tmp_dir, '%(title)s.%(ext)s'),
+                        'ffmpeg_location': '/usr/bin',  # ✅ fix added here
                         'postprocessors': [{
                             'key': 'FFmpegExtractAudio',
                             'preferredcodec': 'mp3',
